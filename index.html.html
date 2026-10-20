@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nivi &amp; Co. – Online Store</title>
+<style>
+:root{
+  --bg:#f5f5f8;--surface:#fff;--ink:#1b1b2f;--muted:#5d5d73;--line:#dcdce6;
+  --accent:#d9441f;--accent-ink:#fff;--ok:#1f8a70;--star:#e8a317;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bg:#13131f;--surface:#1d1d2c;--ink:#ececf5;--muted:#a3a3b8;--line:#33334a;--accent:#ff6b45;--accent-ink:#13131f;--ok:#4cc9a6}
+}
+:root[data-theme="dark"]{--bg:#13131f;--surface:#1d1d2c;--ink:#ececf5;--muted:#a3a3b8;--line:#33334a;--accent:#ff6b45;--accent-ink:#13131f;--ok:#4cc9a6}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Segoe UI",system-ui,-apple-system,sans-serif}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+.promo{background:var(--ink);color:var(--bg);text-align:center;font-size:.88rem;padding:8px 12px}
+.promo b{color:#ffd23f}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;gap:16px;height:68px}
+.logo{font:800 1.4rem Georgia,serif;letter-spacing:-.02em;white-space:nowrap}
+.logo span{color:var(--accent)}
+.search{flex:1;position:relative;max-width:520px}
+.search input{width:100%;padding:11px 16px 11px 42px;border:1.5px solid var(--line);border-radius:99px;background:var(--bg);transition:border-color .2s,box-shadow .2s}
+.search input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 22%,transparent)}
+.search::before{content:"🔍";position:absolute;left:15px;top:50%;transform:translateY(-50%);font-size:.95rem}
+.ibtn{position:relative;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface);font-size:1.1rem;transition:transform .2s,border-color .2s}
+.ibtn:hover{transform:translateY(-2px);border-color:var(--accent)}
+.badge{position:absolute;top:-4px;right:-4px;min-width:20px;height:20px;padding:0 5px;border-radius:99px;background:var(--accent);color:var(--accent-ink);font-size:.75rem;font-weight:700;display:grid;place-items:center;transition:transform .25s}
+.badge.pop{transform:scale(1.4)}
+.hero{padding:34px 0 8px}
+.hero h1{font:800 clamp(1.8rem,4.5vw,2.8rem)/1.1 Georgia,serif;margin:0 0 6px;letter-spacing:-.02em}
+.hero p{margin:0;color:var(--muted)}
+.filters{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;padding:18px 0 8px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;width:100%}
+.chip{padding:8px 18px;border-radius:99px;border:1px solid var(--line);background:var(--surface);transition:all .2s}
+.chip:hover{border-color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.ctl{display:flex;align-items:center;gap:8px;font-size:.92rem;color:var(--muted)}
+.ctl select{padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.ctl input[type=range]{accent-color:var(--accent);width:140px}
+.ctl output{color:var(--ink);font-weight:600;min-width:62px}
+.count{margin-left:auto;color:var(--muted);font-size:.92rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px;padding:12px 0 56px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;transition:transform .25s,box-shadow .25s,border-color .25s;animation:in .45s both}
+@keyframes in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.card:hover{transform:translateY(-5px);border-color:var(--accent);box-shadow:0 16px 30px -18px color-mix(in srgb,var(--accent) 70%,transparent)}
+.pic{position:relative;height:170px;display:grid;place-items:center;font-size:4.2rem;border:0;width:100%;transition:filter .25s}
+.pic span{transition:transform .3s}
+.card:hover .pic span{transform:scale(1.15) rotate(-4deg)}
+.off{position:absolute;top:10px;left:10px;background:var(--accent);color:var(--accent-ink);font-size:.78rem;font-weight:700;padding:3px 10px;border-radius:99px}
+.heart{position:absolute;top:8px;right:8px;width:38px;height:38px;border-radius:50%;border:0;background:rgba(255,255,255,.92);color:#444;font-size:1.1rem}
+.heart[aria-pressed="true"]{color:#e0245e}
+.info{padding:14px 16px 16px;display:flex;flex-direction:column;gap:4px;flex:1}
+.cat{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.info h3{margin:0;font-size:1.05rem}
+.rate{color:var(--star);font-size:.88rem}
+.rate small{color:var(--muted)}
+.price{display:flex;align-items:baseline;gap:8px;margin-top:auto;padding-top:6px}
+.price b{font-size:1.2rem}
+.price s{color:var(--muted);font-size:.9rem}
+.add{margin-top:10px;padding:11px;border:0;border-radius:10px;background:var(--ink);color:var(--bg);font-weight:600;transition:background .2s,transform .15s}
+.add:hover{background:var(--accent);color:var(--accent-ink)}
+.add:active{transform:scale(.97)}
+.empty{grid-column:1/-1;text-align:center;padding:60px 0;color:var(--muted)}
+.empty b{display:block;font-size:1.4rem;color:var(--ink)}
+.empty button{margin-top:14px;padding:10px 22px;border-radius:99px;border:1px solid var(--ink);background:none}
+/* drawer */
+.veil{position:fixed;inset:0;background:rgba(10,10,20,.5);opacity:0;pointer-events:none;transition:opacity .3s;z-index:40}
+.veil.on{opacity:1;pointer-events:auto}
+aside{position:fixed;top:0;right:0;bottom:0;width:min(420px,100%);background:var(--surface);z-index:50;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .35s cubic-bezier(.2,.7,.2,1);padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+aside.on{transform:none}
+.dh{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--line)}
+.dh h2{margin:0;font-size:1.2rem}
+.x{border:0;background:none;font-size:1.5rem;width:40px;height:40px;border-radius:50%}
+.x:hover{background:var(--bg)}
+.ship{padding:12px 20px;font-size:.88rem;border-bottom:1px solid var(--line)}
+.meter{height:6px;background:var(--line);border-radius:99px;margin-top:6px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--ok);width:0;transition:width .4s}
+.items{flex:1;overflow:auto;padding:8px 20px;margin:0;list-style:none}
+.line{display:grid;grid-template-columns:60px 1fr auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.line .t{width:60px;height:60px;border-radius:12px;display:grid;place-items:center;font-size:1.8rem}
+.line h4{margin:0;font-size:.95rem}
+.line small{color:var(--muted)}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:99px;margin-top:6px}
+.qty button{width:30px;height:30px;border:0;background:none;font-size:1.05rem;border-radius:50%}
+.qty button:hover{background:var(--bg)}
+.qty span{min-width:22px;text-align:center;font-weight:600}
+.rm{border:0;background:none;color:var(--muted);font-size:.82rem;text-decoration:underline}
+.rm:hover{color:var(--accent)}
+.sum{padding:16px 20px;border-top:1px solid var(--line);display:grid;gap:8px}
+.row{display:flex;justify-content:space-between;font-size:.95rem}
+.row.total{font-size:1.15rem;font-weight:700}
+.coupon{display:flex;gap:8px}
+.coupon input{flex:1;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);text-transform:uppercase}
+.coupon button{padding:0 16px;border-radius:8px;border:1px solid var(--ink);background:none}
+.cmsg{font-size:.82rem;min-height:1.2em;color:var(--muted)}
+.cmsg.ok{color:var(--ok)}
+.pay{padding:14px;border:0;border-radius:12px;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:1rem}
+.pay:disabled{opacity:.5;cursor:not-allowed}
+.nocart{text-align:center;color:var(--muted);padding:50px 0}
+/* quick view */
+dialog{border:0;border-radius:18px;padding:0;width:min(640px,92vw);background:var(--surface);color:var(--ink)}
+dialog::backdrop{background:rgba(10,10,20,.55)}
+.qv{display:grid;grid-template-columns:1fr 1fr}
+.qv .pic{height:100%;min-height:260px;font-size:6rem}
+.qv .body{padding:24px;display:flex;flex-direction:column;gap:8px}
+.qv h2{margin:0;font:700 1.5rem Georgia,serif}
+.qv p{margin:0;color:var(--muted)}
+@media (max-width:560px){.qv{grid-template-columns:1fr}.qv .pic{min-height:170px}.count{margin-left:0;width:100%}}
+.toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);background:var(--ink);color:var(--bg);padding:12px 20px;border-radius:12px;opacity:0;transition:all .3s;z-index:60;max-width:90%;pointer-events:none}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+footer{border-top:1px solid var(--line);padding:24px 0;color:var(--muted);font-size:.9rem;text-align:center}
+@media (max-width:640px){.logo{font-size:1.15rem}.bar{gap:10px}.ctl input[type=range]{width:110px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="promo">Free delivery above <b>₹999</b> · Use code <b>WELCOME10</b> for 10% off</div>
+<header>
+  <div class="wrap bar">
+    <div class="logo">Nivii <span>&amp;</span> Co </div>
+    <div class="search"><input id="q" type="search" placeholder="Search products…" aria-label="Search products" autocomplete="off"></div>
+    <button class="ibtn" id="theme" aria-label="Switch light or dark theme">◐</button>
+    <button class="ibtn" id="cartBtn" aria-label="Open cart">🛒<span class="badge" id="badge">0</span></button>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero"><h1>Everyday things, well made.</h1><p>Search, filter and add to cart. Your cart and favourites are remembered on this device.</p></section>
+  <div class="filters">
+    <div class="chips" id="chips" role="group" aria-label="Categories"></div>
+    <label class="ctl">Max price <input id="price" type="range" min="500" max="5000" step="100" value="5000"><output id="priceOut">₹5,000</output></label>
+    <label class="ctl">Rating
+      <select id="rating"><option value="0">All</option><option value="4">4★ &amp; up</option><option value="4.5">4.5★ &amp; up</option></select></label>
+    <label class="ctl">Sort
+      <select id="sort"><option value="feat">Featured</option><option value="lo">Price: low to high</option><option value="hi">Price: high to low</option><option value="rate">Top rated</option></select></label>
+    <label class="ctl"><input type="checkbox" id="favOnly"> Favourites only</label>
+    <span class="count" id="count" aria-live="polite"></span>
+  </div>
+  <div class="grid" id="grid"></div>
+</main>
+<footer>© 2026 Loom &amp; Lane. A demo storefront built with HTML, CSS and JavaScript.</footer>
+
+<div class="veil" id="veil"></div>
+<aside id="drawer" aria-label="Shopping cart" aria-hidden="true">
+  <div class="dh"><h2>Your cart</h2><button class="x" id="closeCart" aria-label="Close cart">×</button></div>
+  <div class="ship" id="ship"></div>
+  <ul class="items" id="items"></ul>
+  <div class="sum">
+    <div class="coupon"><input id="code" placeholder="Coupon code" aria-label="Coupon code"><button id="apply">Apply</button></div>
+    <div class="cmsg" id="cmsg"></div>
+    <div class="row"><span>Subtotal</span><span id="sub"></span></div>
+    <div class="row"><span>Discount</span><span id="disc"></span></div>
+    <div class="row"><span>Delivery</span><span id="del"></span></div>
+    <div class="row total"><span>Total</span><span id="tot"></span></div>
+    <button class="pay" id="pay">Checkout</button>
+  </div>
+</aside>
+<dialog id="qv" aria-label="Product details"></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+var P=[
+{id:1,n:"Aero Wireless Earbuds",c:"Electronics",p:2499,o:3999,r:4.5,k:1280,e:"🎧",bg:"#dbe4ff",d:"Noise-reducing earbuds with 28 hours of battery life and a pocket-size case."},
+{id:2,n:"Pulse Smartwatch",c:"Electronics",p:3999,o:5999,r:4.3,k:860,e:"⌚",bg:"#d3f9d8",d:"Heart-rate, sleep and step tracking with a bright always-on display."},
+{id:3,n:"Volt Power Bank 20K",c:"Electronics",p:1499,o:1999,r:4.6,k:2140,e:"🔋",bg:"#fff3bf",d:"20,000 mAh fast-charging power bank that keeps two phones going for days."},
+{id:4,n:"Canvas Weekender Bag",c:"Fashion",p:1799,o:2499,r:4.4,k:540,e:"👜",bg:"#ffe8cc",d:"Water-resistant canvas bag with a padded laptop sleeve and shoulder strap."},
+{id:5,n:"Trail Running Shoes",c:"Fashion",p:2999,o:4499,r:4.2,k:970,e:"👟",bg:"#ffdeeb",d:"Light, breathable shoes with a grippy sole for roads and trails."},
+{id:6,n:"Polarized Sunglasses",c:"Fashion",p:899,o:1499,r:4.1,k:410,e:"🕶️",bg:"#e5dbff",d:"UV400 polarized lenses in a tough, flexible frame."},
+{id:7,n:"Ceramic Coffee Set",c:"Home",p:1299,o:1799,r:4.7,k:690,e:"☕",bg:"#f3e5d8",d:"Two handmade mugs and a matching serving tray, dishwasher safe."},
+{id:8,n:"Bamboo Desk Lamp",c:"Home",p:1999,o:2699,r:4.5,k:320,e:"💡",bg:"#fff9db",d:"Dimmable LED lamp with three colour modes and a bamboo base."},
+{id:9,n:"Linen Cushion Pair",c:"Home",p:799,o:1199,r:4.0,k:260,e:"🛋️",bg:"#d0ebff",d:"Two soft linen cushion covers with inserts included."},
+{id:10,n:"Yoga Mat Pro",c:"Fitness",p:1199,o:1799,r:4.6,k:1530,e:"🧘",bg:"#c3fae8",d:"6 mm non-slip mat with alignment lines and a carry strap."},
+{id:11,n:"Adjustable Dumbbells",c:"Fitness",p:4499,o:5999,r:4.4,k:430,e:"🏋️",bg:"#ffe3e3",d:"Pair of dumbbells that adjust from 2 kg to 12 kg in seconds."},
+{id:12,n:"Insulated Steel Bottle",c:"Fitness",p:699,o:999,r:4.8,k:3020,e:"🥤",bg:"#d0f4de",d:"1 litre bottle that keeps drinks cold for 24 hours or hot for 12."}
+];
+var $=function(s){return document.querySelector(s)};
+var money=function(n){return "₹"+n.toLocaleString("en-IN")};
+var root=document.documentElement;
+function load(k,f){try{var v=localStorage.getItem(k);return v?JSON.parse(v):f}catch(e){return f}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+var cart=load("ll_cart",{}),fav=load("ll_fav",[]),coupon=load("ll_coupon",""),cat="All";
+try{var th=localStorage.getItem("ll_theme");if(th)root.setAttribute("data-theme",th)}catch(e){}
+
+$("#theme").onclick=function(){
+  var dark=root.getAttribute("data-theme")==="dark"||(!root.getAttribute("data-theme")&&matchMedia("(prefers-color-scheme:dark)").matches);
+  var n=dark?"light":"dark";root.setAttribute("data-theme",n);try{localStorage.setItem("ll_theme",n)}catch(e){}
+};
+function toast(t){var el=$("#toast");el.textContent=t;el.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(function(){el.classList.remove("show")},2200)}
+function stars(r){var f=Math.round(r);return "★★★★★".slice(0,f)+"☆☆☆☆☆".slice(0,5-f)}
+
+// categories
+var cats=["All"].concat(P.map(function(p){return p.c}).filter(function(c,i,a){return a.indexOf(c)===i}));
+$("#chips").innerHTML=cats.map(function(c){return '<button class="chip" data-c="'+c+'" aria-pressed="'+(c==="All")+'">'+c+'</button>'}).join("");
+$("#chips").onclick=function(e){var b=e.target.closest(".chip");if(!b)return;cat=b.dataset.c;
+  document.querySelectorAll(".chip").forEach(function(x){x.setAttribute("aria-pressed",x===b)});render()};
+["#q","#price","#rating","#sort","#favOnly"].forEach(function(s){$(s).addEventListener("input",render)});
+
+function render(){
+  var q=$("#q").value.trim().toLowerCase(),max=+$("#price").value,mr=+$("#rating").value,s=$("#sort").value,fo=$("#favOnly").checked;
+  $("#priceOut").textContent=money(max)+(max===5000?"+":"");
+  var list=P.filter(function(p){
+    return (cat==="All"||p.c===cat)&&p.p<=(max===5000?1e9:max)&&p.r>=mr&&(!fo||fav.indexOf(p.id)>-1)&&(!q||(p.n+" "+p.c+" "+p.d).toLowerCase().indexOf(q)>-1);
+  });
+  if(s==="lo")list.sort(function(a,b){return a.p-b.p});
+  if(s==="hi")list.sort(function(a,b){return b.p-a.p});
+  if(s==="rate")list.sort(function(a,b){return b.r-a.r});
+  $("#count").textContent=list.length+(list.length===1?" product":" products");
+  $("#grid").innerHTML=list.length?list.map(card).join(""):'<div class="empty"><b>No products found</b>Try a different search or clear your filters.<br><button id="reset">Clear filters</button></div>';
+}
+function card(p,i){
+  var off=Math.round((1-p.p/p.o)*100),isF=fav.indexOf(p.id)>-1;
+  return '<article class="card" style="animation-delay:'+Math.min(i,8)*40+'ms">'+
+  '<div class="pic" style="background:'+p.bg+'"><span aria-hidden="true">'+p.e+'</span><i class="off" style="font-style:normal">'+off+'% off</i>'+
+  '<button class="heart" data-fav="'+p.id+'" aria-pressed="'+isF+'" aria-label="Favourite '+p.n+'">'+(isF?"♥":"♡")+'</button></div>'+
+  '<div class="info"><span class="cat">'+p.c+'</span><h3>'+p.n+'</h3>'+
+  '<div class="rate">'+stars(p.r)+' <small>'+p.r+' ('+p.k.toLocaleString("en-IN")+')</small></div>'+
+  '<div class="price"><b>'+money(p.p)+'</b><s>'+money(p.o)+'</s></div>'+
+  '<button class="add" data-add="'+p.id+'">Add to cart</button>'+
+  '<button class="rm" data-view="'+p.id+'" style="margin-top:6px">Quick view</button></div></article>';
+}
+$("#grid").onclick=function(e){
+  var t=e.target;
+  if(t.id==="reset"){$("#q").value="";$("#price").value=5000;$("#rating").value=0;$("#favOnly").checked=false;cat="All";
+    document.querySelectorAll(".chip").forEach(function(x,i){x.setAttribute("aria-pressed",i===0)});render();return}
+  var a=t.closest("[data-add]"),f=t.closest("[data-fav]"),v=t.closest("[data-view]");
+  if(a)add(+a.dataset.add);
+  if(f){var id=+f.dataset.fav,i=fav.indexOf(id);if(i>-1)fav.splice(i,1);else fav.push(id);save("ll_fav",fav);render();toast(i>-1?"Removed from favourites":"Saved to favourites")}
+  if(v)quick(+v.dataset.view);
+};
+
+// quick view
+function quick(id){
+  var p=P.filter(function(x){return x.id===id})[0],d=$("#qv");
+  d.innerHTML='<div class="qv"><div class="pic" style="background:'+p.bg+'"><span>'+p.e+'</span></div><div class="body"><span class="cat">'+p.c+'</span><h2>'+p.n+'</h2>'+
+  '<div class="rate">'+stars(p.r)+' <small>'+p.r+' · '+p.k.toLocaleString("en-IN")+' reviews</small></div><p>'+p.d+'</p>'+
+  '<div class="price"><b>'+money(p.p)+'</b><s>'+money(p.o)+'</s></div>'+
+  '<button class="add" id="qvAdd">Add to cart</button><button class="rm" id="qvClose">Close</button></div></div>';
+  d.showModal();
+  $("#qvAdd").onclick=function(){add(id);d.close()};
+  $("#qvClose").onclick=function(){d.close()};
+}
+$("#qv").addEventListener("click",function(e){if(e.target===this)this.close()});
+
+// cart
+function add(id){cart[id]=(cart[id]||0)+1;save("ll_cart",cart);cartUI();var b=$("#badge");b.classList.add("pop");setTimeout(function(){b.classList.remove("pop")},250);
+  toast(P.filter(function(p){return p.id===id})[0].n+" added to cart")}
+function totals(){
+  var sub=0;Object.keys(cart).forEach(function(id){var p=P.filter(function(x){return x.id==+id})[0];sub+=p.p*cart[id]});
+  var disc=coupon==="WELCOME10"?Math.round(sub*.1):0,after=sub-disc,del=sub===0?0:(after>=999?0:79);
+  return {sub:sub,disc:disc,del:del,tot:after+del,after:after};
+}
+function cartUI(){
+  var ids=Object.keys(cart),n=ids.reduce(function(a,k){return a+cart[k]},0),t=totals();
+  $("#badge").textContent=n;
+  $("#items").innerHTML=ids.length?ids.map(function(id){
+    var p=P.filter(function(x){return x.id==+id})[0];
+    return '<li class="line"><div class="t" style="background:'+p.bg+'">'+p.e+'</div><div><h4>'+p.n+'</h4><small>'+money(p.p)+' each</small><br>'+
+    '<span class="qty"><button data-q="-1" data-id="'+id+'" aria-label="Decrease quantity">−</button><span>'+cart[id]+'</span><button data-q="1" data-id="'+id+'" aria-label="Increase quantity">+</button></span></div>'+
+    '<div style="text-align:right"><b>'+money(p.p*cart[id])+'</b><br><button class="rm" data-rm="'+id+'">Remove</button></div></li>';
+  }).join(""):'<li class="nocart">Your cart is empty.<br>Add something you like.</li>';
+  $("#sub").textContent=money(t.sub);$("#disc").textContent=t.disc?"− "+money(t.disc):"–";
+  $("#del").textContent=t.sub===0?"–":(t.del?money(t.del):"Free");$("#tot").textContent=money(t.tot);
+  $("#pay").disabled=!ids.length;
+  var left=999-t.after;
+  $("#ship").innerHTML=t.sub===0?"Free delivery on orders above ₹999":(left>0?"Add <b>"+money(left)+"</b> more for free delivery":"🎉 You get free delivery!")+'<div class="meter"><i style="width:'+Math.min(100,t.after/999*100)+'%"></i></div>';
+  if(coupon){$("#code").value=coupon;$("#cmsg").textContent="WELCOME10 applied: 10% off";$("#cmsg").className="cmsg ok"}
+}
+$("#items").onclick=function(e){
+  var q=e.target.closest("[data-q]"),r=e.target.closest("[data-rm]");
+  if(q){var id=q.dataset.id;cart[id]+=+q.dataset.q;if(cart[id]<1)delete cart[id]}
+  if(r)delete cart[r.dataset.rm];
+  if(q||r){save("ll_cart",cart);cartUI()}
+};
+$("#apply").onclick=function(){
+  var c=$("#code").value.trim().toUpperCase(),m=$("#cmsg");
+  if(c==="WELCOME10"){coupon=c;save("ll_coupon",coupon);cartUI()}
+  else{coupon="";save("ll_coupon","");m.textContent=c?"That code isn’t valid. Try WELCOME10.":"Enter a code first.";m.className="cmsg";cartUI();m.textContent=c?"That code isn’t valid. Try WELCOME10.":"Enter a code first."}
+};
+$("#pay").onclick=function(){
+  var t=totals();cart={};coupon="";save("ll_cart",cart);save("ll_coupon","");$("#code").value="";$("#cmsg").textContent="";cartUI();openCart(false);
+  toast("Order placed! Total paid: "+money(t.tot)+". Thank you.");
+};
+function openCart(on){$("#drawer").classList.toggle("on",on);$("#veil").classList.toggle("on",on);$("#drawer").setAttribute("aria-hidden",!on);if(on)$("#closeCart").focus();else $("#cartBtn").focus()}
+$("#cartBtn").onclick=function(){openCart(true)};
+$("#closeCart").onclick=$("#veil").onclick=function(){openCart(false)};
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&$("#drawer").classList.contains("on"))openCart(false)});
+
+render();cartUI();
+})();
+</script>
+</body>
+</html>
